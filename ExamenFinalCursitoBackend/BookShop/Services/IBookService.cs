@@ -10,5 +10,5 @@ public interface IBookService
     
     public void DeleteBook(int id);
     
-    public Book GetBookById(int id);
+    public Book? GetBookById(int id);
 }

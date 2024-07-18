@@ -19,7 +19,7 @@ public class CustomerRepository : ICustomerRepository
             // Esto permite que se abra la conexión con la base de datos
             connection.Open();
             
-            var query = "INSERT INTO Books (Name, LastName, Email, Address, PhoneNumber) VALUES (@Name, @LastName, @Email, @Address, @PhoneNumber)";
+            var query = "INSERT INTO Customers (Name, LastName, Email, Address, PhoneNumber) VALUES (@Name, @LastName, @Email, @Address, @PhoneNumber)";
             
             // Esto permite que se cree un comando para la base de datos
             using (var command = new MySqlCommand(query, connection))
@@ -39,7 +39,7 @@ public class CustomerRepository : ICustomerRepository
         }
     }
 
-    public Customer GetById(int id)
+    public Customer? GetById(int id)
     {
         using (var connection = new MySqlConnection(_connectionString))
         {
@@ -47,7 +47,7 @@ public class CustomerRepository : ICustomerRepository
             connection.Open();
 
             // Esto permite que se haga la inserción de los libros en la base de datos
-            var query = "SELECT FROM Customers WHERE Id = @Id";
+            var query = "SELECT * FROM Customers WHERE Id = @Id";
 
             using (var command = new MySqlCommand(query, connection))
             {
@@ -59,7 +59,7 @@ public class CustomerRepository : ICustomerRepository
                     {
                         return new Customer
                         {
-                            Id = reader.GetInt32("Id"),
+                            Id = Convert.ToInt32(reader["Id"]),
                             Name = reader.GetString("Name"),
                             LastName = reader.GetString("LastName"),
                             Email = reader.GetString("Email"),

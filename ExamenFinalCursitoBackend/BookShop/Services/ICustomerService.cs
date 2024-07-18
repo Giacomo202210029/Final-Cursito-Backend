@@ -6,5 +6,5 @@ public interface ICustomerService
 {
     public void AddCustomer(Customer customer);
     
-    public Customer GetCustomerById(int id);
+    public Customer? GetCustomerById(int id);
 }

@@ -47,7 +47,7 @@ public class BookRepository : IBookRepository
         using (var connection = new MySqlConnection(_connectionString))
         {
             connection.Open();
-            var query = "UPDATE Libros SET Title = @Title, Author = @Author, ISBN = @ISBN, Genre = @Genre, Price = @Price, InventoryQuantity = @InventoryQuantity WHERE Id = @Id";
+            var query = "UPDATE Books SET Title = @Title, Author = @Author, ISBN = @ISBN, Genre = @Genre, Price = @Price, InventoryQuantity = @InventoryQuantity WHERE Id = @Id";
             using (var command = new MySqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Title", book.Title);
@@ -56,6 +56,7 @@ public class BookRepository : IBookRepository
                 command.Parameters.AddWithValue("@Genre", book.Genre);
                 command.Parameters.AddWithValue("@Price", book.Price);
                 command.Parameters.AddWithValue("@InventoryQuantity", book.InventoryQuantity);
+                command.Parameters.AddWithValue("@Id", book.Id);
                 command.ExecuteNonQuery();
             }
         }
@@ -81,39 +82,33 @@ public class BookRepository : IBookRepository
 
     }
 
-    public Book GetById(int id)
+    public Book? GetById(int id)
     {
         using (var connection = new MySqlConnection(_connectionString))
         {
-            // Esto permite que se abra la conexión con la base de datos
             connection.Open();
-
-            // Esto permite que se haga la inserción de los libros en la base de datos
-            var query = "SELECT FROM Books WHERE Id = @Id";
-
+            var query = "SELECT * FROM Books WHERE Id = @Id";
             using (var command = new MySqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@Id", id);
-
                 using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         return new Book
                         {
-                            Id = reader.GetInt32("Id"),
-                            Title = reader.GetString("Title"),
-                            Author = reader.GetString("Author"),
-                            Isbn = reader.GetString("Isbn"),
-                            Genre = reader.GetString("Genre"),
-                            Price = reader.GetDecimal("Price"),
-                            InventoryQuantity = reader.GetInt32("InventoryQuantity")
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Title = reader["Title"].ToString(),
+                            Author = reader["Author"].ToString(),
+                            Isbn = reader["ISBN"].ToString(),
+                            Genre = reader["Genre"].ToString(),
+                            Price = Convert.ToDecimal(reader["Price"]),
+                            InventoryQuantity = Convert.ToInt32(reader["InventoryQuantity"])
                         };
                     }
                 }
-
             }
         }
-        return null; 
+        return null;
     }
 }

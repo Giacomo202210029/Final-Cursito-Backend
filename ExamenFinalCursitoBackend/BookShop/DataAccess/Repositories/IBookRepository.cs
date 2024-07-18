@@ -10,6 +10,6 @@ public interface IBookRepository
     
     public void Delete(int id);
     
-    public Book GetById(int id);
+    public Book? GetById(int id);
     
 }

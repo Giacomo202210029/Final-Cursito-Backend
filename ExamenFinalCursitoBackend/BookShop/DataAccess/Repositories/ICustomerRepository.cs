@@ -6,5 +6,5 @@ public interface ICustomerRepository
 {
     public void Create(Customer customer);
     
-    public Customer GetById(int id);
+    public Customer? GetById(int id);
 }

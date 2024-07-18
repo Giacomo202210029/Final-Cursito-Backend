@@ -29,7 +29,13 @@ public class SaleController : ControllerBase
     [HttpPost]
     public ActionResult CreateSale([FromBody] Sale sale)
     {
-        _saleService.AddSale(sale);
-        return CreatedAtAction(nameof(GetSaleById), new { id = sale.Id }, sale);
+        try{
+            _saleService.AddSale(sale);
+            return CreatedAtAction(nameof(GetSaleById), new { id = sale.Id }, sale);
+
+        }catch(Exception e){
+            return BadRequest(e.Message);
+        }
+       
     }
 }

@@ -28,9 +28,9 @@ public class SaleRepository : ISaleRepository
             using (var command = new MySqlCommand(query, connection))
             {
                 // Esto permite que se hagan las inserciones de los libros en la base de datos
-                command.Parameters.AddWithValue("@Title", sale.CustomerId);
-                command.Parameters.AddWithValue("@Author", sale.Date);
-                command.Parameters.AddWithValue("@ISBN", sale.Total);
+                command.Parameters.AddWithValue("@CustomerId", sale.CustomerId);
+                command.Parameters.AddWithValue("@Date", sale.Date);
+                command.Parameters.AddWithValue("@Total", sale.Total);
 
                 // Esto permite que se ejecute el comando
                 //Execute non query es para comandos que no devuelven nada
@@ -48,7 +48,7 @@ public class SaleRepository : ISaleRepository
             connection.Open();
 
             // Esto permite que se haga la inserción de los libros en la base de datos
-            var query = "SELECT FROM Sales WHERE Id = @Id";
+            var query = "SELECT * FROM Sales WHERE Id = @Id";
 
             using (var command = new MySqlCommand(query, connection))
             {
@@ -62,7 +62,7 @@ public class SaleRepository : ISaleRepository
                         {
                             Id = reader.GetInt32("Id"),
                             CustomerId = reader.GetInt32("CustomerId"),
-                            Date = reader.GetString("Date"),
+                            Date = Convert.ToDateTime(reader["Date"]).ToString(),
                             Total = reader.GetDecimal("Total")
                         };
                     }

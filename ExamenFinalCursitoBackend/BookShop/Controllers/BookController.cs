@@ -43,13 +43,13 @@ public class BookController : ControllerBase
         }
 
         _bookService.UpdateBook(book);
-        return NoContent();
+        return Ok();
     }
 
     [HttpDelete("{id}")]
     public ActionResult DeleteBook(int id)
     {
         _bookService.DeleteBook(id);
-        return NoContent();
+        return Ok();
     }
 }
